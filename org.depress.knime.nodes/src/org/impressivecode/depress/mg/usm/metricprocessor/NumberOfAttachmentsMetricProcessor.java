@@ -1,4 +1,4 @@
-package org.impressivecode.depress.mg.usm;
+package org.impressivecode.depress.mg.usm.metricprocessor;
 
 import org.impressivecode.depress.its.common.ITSDataType;
 /**
