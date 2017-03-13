@@ -19,6 +19,11 @@ package org.impressivecode.depress.its.jira.onlinemodel;
 
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import com.fasterxml.jackson.core.JsonFactory;
+
 /**
  * 
  * @author Marcin Kunert, Wroclaw University of Technology
@@ -32,6 +37,19 @@ public class JiraOnlineIssueChangeRowItem {
     private String field;
     private String changedFrom;
     private String changedTo;
+    
+    public JiraOnlineIssueChangeRowItem() {
+    	
+    }
+    
+    public JiraOnlineIssueChangeRowItem(JsonObject data) {
+    	this.key = data.getString("key");
+    	this.timestamp = new Date(new Long(data.getString("timestamp")));
+    	this.author = data.getString("author");
+    	this.field = data.getString("field");
+    	this.changedFrom = data.getString("changedFrom");
+    	this.changedTo = data.getString("changedTo");
+    }
 
     public String getKey() {
         return key;
@@ -80,4 +98,22 @@ public class JiraOnlineIssueChangeRowItem {
     public void setChangedTo(String changedTo) {
         this.changedTo = changedTo;
     }
+    
+    private String checkIfNotNull(String s) {
+    	return s != null ? s : "";
+    }
+
+	@Override
+	public String toString() {
+		return Json.createObjectBuilder()
+				.add("key", key)
+				.add("timestamp", String.valueOf(timestamp.getTime()))
+				.add("author", author)
+				.add("field", field)
+				.add("changedFrom", checkIfNotNull(changedFrom))
+				.add("changedTo", checkIfNotNull(changedTo))
+				.build().toString();
+	}
+    
+    
 }
