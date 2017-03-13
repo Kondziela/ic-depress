@@ -83,6 +83,11 @@
             factory-class="org.impressivecode.depress.its.jira.JiraOnlineAdapterNodeFactory"
             id="org.impressivecode.depress.its.jiraonline">
       </node>
+      <node
+            category-path="depress/depress.its"
+            factory-class="org.impressivecode.depress.its.jira.history.JiraHistoryNodeFactory"
+            id="org.impressivecode.depress.its.jirahistory">
+      </node>
         <node
             category-path="depress/depress.mr"
             factory-class="org.impressivecode.depress.mr.sourcecrawler.CrawlerAdapterNodeFactory"
