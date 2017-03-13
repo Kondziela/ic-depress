@@ -25,6 +25,7 @@ import java.util.Set;
 import org.impressivecode.depress.common.DataTableSpecUtils;
 import org.impressivecode.depress.common.InputTransformer;
 import org.impressivecode.depress.common.TableCellReader;
+import org.impressivecode.depress.its.jira.history.JiraHistoryAdapterTableFactory;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTable;
@@ -80,6 +81,12 @@ public class ITSInputTransformer implements InputTransformer<ITSDataType> {
         its.setTimeEstimate(reader.intOptional(ITSAdapterTableFactory.TIME_ESTIMATE));
         its.setTimeSpent(reader.intOptional(ITSAdapterTableFactory.TIME_SPENT));
         its.setAttachments(reader.stringSetOptional(ITSAdapterTableFactory.ATTACHMENTS));
+        its.setSubtasks(reader.stringListOptional(ITSAdapterTableFactory.SUBTASKS));
+        its.setCommentsWithoutClean(reader.stringListOptional(ITSAdapterTableFactory.COMMENTS_WITHOUT_CLEAN));
+        its.setLink(reader.stringOptional(ITSAdapterTableFactory.LINK));
+        its.setHistory(reader.stringListOptional(JiraHistoryAdapterTableFactory.HISTORY));
+        its.setCreated(reader.dateOptional(ITSAdapterTableFactory.CREATION_DATE));
+        its.setCommentsDates(reader.dateListCellSet(ITSAdapterTableFactory.COMMENTS_DATES));
         //add check if minimaldata set requires column for large data e.g. comments or description
         return its;
     }

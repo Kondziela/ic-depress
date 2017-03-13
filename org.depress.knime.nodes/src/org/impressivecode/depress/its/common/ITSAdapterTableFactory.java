@@ -26,7 +26,13 @@ import static org.impressivecode.depress.common.Cells.stringListOrMissingCell;
 import static org.impressivecode.depress.common.Cells.stringOrMissingCell;
 import static org.impressivecode.depress.common.Cells.stringSetCell;
 import static org.impressivecode.depress.common.Cells.stringSetCellOrMissing;
+import static org.impressivecode.depress.common.Cells.dateListOrMissingCell;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.impressivecode.depress.its.jira.history.JiraHistoryAdapterTableFactory;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -70,46 +76,91 @@ public class ITSAdapterTableFactory {
     public static final String ATTACHMENTS = "Attachments";
     public static final String VOTES = "Votes";
     public static final String WATCHES = "Watches";
+    public static final String SUBTASKS = "Subtasks";
+    public static final String COMMENTS_WITHOUT_CLEAN = "Comments without clean";
+    public static final String COMMENTS_DATES = "Comments dates";
 
     public static final DataColumnSpec ISSUE_ID_COLSPEC = new DataColumnSpecCreator(ISSUE_ID, StringCell.TYPE).createSpec();
     public static final DataColumnSpec RESOLVED_DATE_COLSPEC = new DataColumnSpecCreator(RESOLVED_DATE, DateAndTimeCell.TYPE).createSpec();
     public static final DataColumnSpec REPORTER_COLSPEC = new DataColumnSpecCreator(REPORTER, StringCell.TYPE).createSpec();
     public static final DataColumnSpec ASSIGNEES_COLSPEC = new DataColumnSpecCreator(ASSIGNEES, SetCell.getCollectionType(StringCell.TYPE)).createSpec();
     public static final DataColumnSpec COMMENT_AUTHORS_COLSPEC = new DataColumnSpecCreator(COMMENT_AUTHORS, SetCell.getCollectionType(StringCell.TYPE)).createSpec();
+    public static final DataColumnSpec LINK_COLSPEC = new DataColumnSpecCreator(LINK, StringCell.TYPE).createSpec();
     public static final DataColumnSpec RESOLUTION_COLSPEC = new DataColumnSpecCreator(RESOLUTION, StringCell.TYPE).createSpec();
     public static final DataColumnSpec PARENTID_COLSPEC = new DataColumnSpecCreator(PARENT_ID, StringCell.TYPE).createSpec();
     public static final DataColumnSpec LABELS_COLSPEC = new DataColumnSpecCreator(LABELS, SetCell.getCollectionType(StringCell.TYPE)).createSpec();
     public static final DataColumnSpec ATTACHMENTS_COLSPEC = new DataColumnSpecCreator(ATTACHMENTS, SetCell.getCollectionType(StringCell.TYPE)).createSpec();
+    public static final DataColumnSpec SUBTASKS_COLSPEC = new DataColumnSpecCreator(SUBTASKS, ListCell.getCollectionType(StringCell.TYPE)).createSpec();
+    public static final DataColumnSpec COMMENTS_WITHOUT_COLSPEC = new DataColumnSpecCreator(COMMENTS_WITHOUT_CLEAN, ListCell.getCollectionType(StringCell.TYPE)).createSpec();
+    public static final DataColumnSpec COMMENTS_DATES_COLSPEC = new DataColumnSpecCreator(COMMENTS_DATES, ListCell.getCollectionType(DateAndTimeCell.TYPE)).createSpec();
     
     protected ITSAdapterTableFactory() {
     }
 
     public static DataTableSpec createDataColumnSpec() {
-        DataColumnSpec[] allColSpecs = { 
-            ISSUE_ID_COLSPEC,
-            new DataColumnSpecCreator(CREATION_DATE, DateAndTimeCell.TYPE).createSpec(),
-            RESOLVED_DATE_COLSPEC, //should be a list or new column wit all updates
-            new DataColumnSpecCreator(UPDATED_DATE, DateAndTimeCell.TYPE).createSpec(), //should be a list or new column wit all updates
-            new DataColumnSpecCreator(TIME_ESTIMATE, IntCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(TIME_SPENT, IntCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(STATUS, StringCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(TYPE, StringCell.TYPE).createSpec(),
-            RESOLUTION_COLSPEC,
-            new DataColumnSpecCreator(VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
-            new DataColumnSpecCreator(FIX_VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
-            new DataColumnSpecCreator(PRIORITY, StringCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(SUMMARY, StringCell.TYPE).createSpec(),
-            REPORTER_COLSPEC, 
-            ASSIGNEES_COLSPEC, 
-            COMMENT_AUTHORS_COLSPEC,
-            new DataColumnSpecCreator(LINK, StringCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(DESCRIPTION, StringCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(COMMENTS, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
-            PARENTID_COLSPEC,
-            LABELS_COLSPEC,
-            ATTACHMENTS_COLSPEC,
-            new DataColumnSpecCreator(VOTES, IntCell.TYPE).createSpec(),
-            new DataColumnSpecCreator(WATCHES, IntCell.TYPE).createSpec()
+    	DataColumnSpec[] allColSpecs = { 
+                ISSUE_ID_COLSPEC,
+                new DataColumnSpecCreator(CREATION_DATE, DateAndTimeCell.TYPE).createSpec(),
+                RESOLVED_DATE_COLSPEC, //should be a list or new column wit all updates
+                new DataColumnSpecCreator(UPDATED_DATE, DateAndTimeCell.TYPE).createSpec(), //should be a list or new column wit all updates
+                new DataColumnSpecCreator(TIME_ESTIMATE, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(TIME_SPENT, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(STATUS, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(TYPE, StringCell.TYPE).createSpec(),
+                RESOLUTION_COLSPEC,
+                new DataColumnSpecCreator(VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                new DataColumnSpecCreator(FIX_VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                new DataColumnSpecCreator(PRIORITY, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(SUMMARY, StringCell.TYPE).createSpec(),
+                REPORTER_COLSPEC, 
+                ASSIGNEES_COLSPEC, 
+                COMMENT_AUTHORS_COLSPEC,
+                LINK_COLSPEC,
+                new DataColumnSpecCreator(DESCRIPTION, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(COMMENTS, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                PARENTID_COLSPEC,
+                LABELS_COLSPEC,
+                ATTACHMENTS_COLSPEC,
+                new DataColumnSpecCreator(VOTES, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(WATCHES, IntCell.TYPE).createSpec(),
+                SUBTASKS_COLSPEC,
+                COMMENTS_WITHOUT_COLSPEC,
+                COMMENTS_DATES_COLSPEC
+        };
+        DataTableSpec outputSpec = new DataTableSpec(allColSpecs);
+        return outputSpec;
+    }
+    
+    public static DataTableSpec createDataColumnSpecHistory() {
+    	DataColumnSpec[] allColSpecs = { 
+                ISSUE_ID_COLSPEC,
+                new DataColumnSpecCreator(CREATION_DATE, DateAndTimeCell.TYPE).createSpec(),
+                RESOLVED_DATE_COLSPEC, //should be a list or new column wit all updates
+                new DataColumnSpecCreator(UPDATED_DATE, DateAndTimeCell.TYPE).createSpec(), //should be a list or new column wit all updates
+                new DataColumnSpecCreator(TIME_ESTIMATE, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(TIME_SPENT, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(STATUS, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(TYPE, StringCell.TYPE).createSpec(),
+                RESOLUTION_COLSPEC,
+                new DataColumnSpecCreator(VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                new DataColumnSpecCreator(FIX_VERSION, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                new DataColumnSpecCreator(PRIORITY, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(SUMMARY, StringCell.TYPE).createSpec(),
+                REPORTER_COLSPEC, 
+                ASSIGNEES_COLSPEC, 
+                COMMENT_AUTHORS_COLSPEC,
+                LINK_COLSPEC,
+                new DataColumnSpecCreator(DESCRIPTION, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(COMMENTS, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
+                PARENTID_COLSPEC,
+                LABELS_COLSPEC,
+                ATTACHMENTS_COLSPEC,
+                new DataColumnSpecCreator(VOTES, IntCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(WATCHES, IntCell.TYPE).createSpec(),
+                SUBTASKS_COLSPEC,
+                COMMENTS_WITHOUT_COLSPEC,
+                COMMENTS_DATES_COLSPEC,
+                new DataColumnSpecCreator("History", ListCell.getCollectionType(StringCell.TYPE)).createSpec()
         };
         DataTableSpec outputSpec = new DataTableSpec(allColSpecs);
         return outputSpec;
@@ -141,7 +192,10 @@ public class ITSAdapterTableFactory {
             stringSetCellOrMissing(itsData.getLabels()),
             stringSetCellOrMissing(itsData.getAttachments()),
             integerOrMissingCell(itsData.getVotes()),
-            integerOrMissingCell(itsData.getWatches())
+            integerOrMissingCell(itsData.getWatches()),
+            stringListOrMissingCell(itsData.getSubtasks()),
+            stringListOrMissingCell(itsData.getCommentsWithoutClean()),
+            dateListOrMissingCell(itsData.getCommentsDates())
         };
         DataRow row = new DefaultRow(itsData.getIssueId(), cells);
         return row;

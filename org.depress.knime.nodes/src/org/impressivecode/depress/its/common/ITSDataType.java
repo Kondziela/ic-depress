@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.impressivecode.depress.its.jira.onlinemodel.JiraOnlineIssueChangeRowItem;
+
 
 /**
  * @author Marek Majchrzak, ImpressiveCode
@@ -55,6 +57,11 @@ public class ITSDataType {
 	private Set<String> attachments = Collections.emptySet();
 	private Integer votes;
 	private Integer watches;
+	private List<String> subtasks = Collections.emptyList();
+	private List<String> commentsWithoutClean = Collections.emptyList();
+	// this is used in US Metrics
+	private List<String> history;
+	private List<Date> commentsDates = Collections.emptyList();
 
     public String getIssueId() {
         return issueId;
@@ -249,7 +256,42 @@ public class ITSDataType {
 	public void setWatches(Integer watchers) {
 		this.watches = watchers;
 	}
+	
+	public List<String> getSubtasks() {
+		return subtasks;
+	}
 
+	public void setSubtasks(List<String> subtasks) {
+		this.subtasks = subtasks;
+	}
+
+	public List<String> getCommentsWithoutClean() {
+		return commentsWithoutClean;
+	}
+
+	public void setCommentsWithoutClean(List<String> commentsWithoutClean) {
+		this.commentsWithoutClean = commentsWithoutClean;
+	}
+
+	public List<String> getHistory() {
+		return history;
+	}
+
+	public void setHistory(List<String> history) {
+		this.history = history;
+	}
+	
+	
+
+	public List<Date> getCommentsDates() {
+		return commentsDates;
+	}
+
+	public void setCommentsDates(List<Date> commentsDates) {
+		this.commentsDates = commentsDates;
+	}
+
+	// TODO[AKO]: generate new Override methods
 	@Override
 	public String toString() {
 		return "ITSDataType [issueId=" + issueId + ", created=" + created + ", updated=" + updated + ", resolved="
@@ -258,7 +300,8 @@ public class ITSDataType {
 				+ description + ", comments=" + comments + ", resolution=" + resolution + ", reporter=" + reporter
 				+ ", timeEstimate=" + timeEstimate + ", timeSpent=" + timeSpent + ", assignees=" + assignees
 				+ ", commentAuthors=" + commentAuthors + ", parentId=" + parentId + ", labels=" + labels
-				+ ", attachments=" + attachments + ", votes=" + votes + ", watchers=" + watches + "]";
+				+ ", attachments=" + attachments + ", votes=" + votes + ", watches=" + watches + ", subtasks="
+				+ subtasks + ", commentsWithoutClean=" + commentsWithoutClean + "]";
 	}
 
 	@Override
@@ -269,6 +312,7 @@ public class ITSDataType {
 		result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
 		result = prime * result + ((commentAuthors == null) ? 0 : commentAuthors.hashCode());
 		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+		result = prime * result + ((commentsWithoutClean == null) ? 0 : commentsWithoutClean.hashCode());
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((fixVersion == null) ? 0 : fixVersion.hashCode());
@@ -281,6 +325,7 @@ public class ITSDataType {
 		result = prime * result + ((resolution == null) ? 0 : resolution.hashCode());
 		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((subtasks == null) ? 0 : subtasks.hashCode());
 		result = prime * result + ((summary == null) ? 0 : summary.hashCode());
 		result = prime * result + ((timeEstimate == null) ? 0 : timeEstimate.hashCode());
 		result = prime * result + ((timeSpent == null) ? 0 : timeSpent.hashCode());
@@ -320,6 +365,11 @@ public class ITSDataType {
 			if (other.comments != null)
 				return false;
 		} else if (!comments.equals(other.comments))
+			return false;
+		if (commentsWithoutClean == null) {
+			if (other.commentsWithoutClean != null)
+				return false;
+		} else if (!commentsWithoutClean.equals(other.commentsWithoutClean))
 			return false;
 		if (created == null) {
 			if (other.created != null)
@@ -371,6 +421,11 @@ public class ITSDataType {
 		} else if (!resolved.equals(other.resolved))
 			return false;
 		if (status != other.status)
+			return false;
+		if (subtasks == null) {
+			if (other.subtasks != null)
+				return false;
+		} else if (!subtasks.equals(other.subtasks))
 			return false;
 		if (summary == null) {
 			if (other.summary != null)

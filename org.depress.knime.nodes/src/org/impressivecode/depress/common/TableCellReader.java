@@ -114,6 +114,17 @@ public final class TableCellReader {
         
         return returned;
     }
+    
+    public List<Date> dateListCellSet(final String colName) {
+    	ListCell set = ((ListCell) row.getCell(spec.findColumnIndex(colName)));
+    	ArrayList<Date> returned = new ArrayList<Date>();
+        for(DataCell cell : set){
+        	Date value = ((DateAndTimeCell)cell).getUTCCalendarClone().getTime();
+        	returned.add(value);
+        }
+        
+        return returned;
+    }
 
     private boolean optionalData(final String colName) {
         return !spec.containsName(colName) || row.getCell(spec.findColumnIndex(colName)).isMissing();

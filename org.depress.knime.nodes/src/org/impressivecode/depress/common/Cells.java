@@ -95,6 +95,25 @@ public class Cells {
         }));
         return CollectionCellFactory.createListCell(coll);
     }
+    
+    public static DataCell dateListOrMissingCell(final List<Date> dateList) {
+    	if (dateList == null || dateList.isEmpty()) {
+    		return DataType.getMissingCell();
+    	} else {
+    		return dateListCell(dateList);
+    	}
+    }
+    
+    public static DataCell dateListCell(List<Date> dateList) {
+    	List<DataCell> coll = Lists.newArrayList(Iterables.transform(dateList, new Function<Date, DataCell>() {
+
+			@Override
+			public DataCell apply(Date date) {
+				return dateTimeCell(date);
+			}
+		}));
+        return CollectionCellFactory.createListCell(coll);
+    }
 
     public static DataCell integerListCell(final Iterable<Integer> confidence) {
         List<DataCell> coll = Lists.newArrayList(Iterables.transform(confidence, new Function<Integer, DataCell>() {
