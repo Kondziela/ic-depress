@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.impressivecode.depress.its.common.ITSDataType;
+import org.impressivecode.depress.mg.usm.metricprocessor.NumberOfAttachmentsMetricProcessor;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -5,7 +5,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.Arrays;
 
 import org.impressivecode.depress.its.common.ITSDataType;
-import org.impressivecode.depress.mg.usm.NumberOfCommentsMetricProcessor;
+import org.impressivecode.depress.mg.usm.metricprocessor.NumberOfCommentsMetricProcessor;
 import org.junit.Before;
 import org.junit.Test;
 
