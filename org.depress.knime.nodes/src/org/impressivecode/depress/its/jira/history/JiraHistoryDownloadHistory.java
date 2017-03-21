@@ -69,7 +69,7 @@ public class JiraHistoryDownloadHistory {
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(addres).openConnection();
 			// TODO[AKO]: set user login and password
-			String userCredentials = "Arti:Edwin123";
+			String userCredentials = "login:passwod";
 			String basicAuth = "Basic " + DatatypeConverter.printBase64Binary(userCredentials.getBytes("UTF-8"));
 			connection.setRequestProperty ("Authorization", basicAuth);
 			return connection.getResponseCode() == 200 ? connection : null;
