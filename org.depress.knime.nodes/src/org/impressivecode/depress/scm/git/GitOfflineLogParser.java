@@ -75,8 +75,9 @@ public class GitOfflineLogParser {
             HASH, DATE, AUTHOR, MSG, FILES
         }
 
+        // IMPORTANT!!!!!!!!!!!!!!!!! BAD PATERN
         private final static Pattern PATTERN = Pattern
-                .compile("^:\\d{6} \\d{6} [a-f0-9]{40} [a-f0-9]{40} (A|C|D|M|R|T)\t(.*)$");
+                .compile("^:\\d{6} \\d{6} [a-f0-9]{40} [a-f0-9]{40} (A|C|D|M|R[0-9]{3}|T)\t(.*)$");
 
         final ImmutableList.Builder<GitCommit> builder = ImmutableList.builder();
         private SCMParserOptions options;
