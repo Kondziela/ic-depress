@@ -86,7 +86,7 @@ public class ITSInputTransformer implements InputTransformer<ITSDataType> {
         its.setLink(reader.stringOptional(ITSAdapterTableFactory.LINK));
         its.setHistory(reader.stringListOptional(JiraHistoryAdapterTableFactory.HISTORY));
         its.setCreated(reader.dateOptional(ITSAdapterTableFactory.CREATION_DATE));
-        its.setCommentsDates(reader.dateListCellSet(ITSAdapterTableFactory.COMMENTS_DATES));
+        its.setCommentsDates(reader.dateListOptional(ITSAdapterTableFactory.COMMENTS_DATES));
         //add check if minimaldata set requires column for large data e.g. comments or description
         return its;
     }

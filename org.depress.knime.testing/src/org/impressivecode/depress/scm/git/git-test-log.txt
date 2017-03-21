@@ -5,10 +5,6 @@ GitTableFactory now extends SCMAdapterTableFactory. Also added tests.
 
 965885f3c9f03b62a41e79d8f95d3e0b2620215f
 :100644 100644 156f8aeec4961597868de9e1475c7d4210777de1 e20ed0a59cc750c61e2e0ddd8a9b84791d6c49f2 M	ic-depress-scm-git/.classpath
-:100644 100644 375fff00bc44af7aa162b097e0f38b5c837eeeb3 efcc508fa54b2c72c0e6751cf592be5e4529d52c M	ic-depress-scm-git/META-INF/MANIFEST.MF
-:100644 100644 c3fd6b5a2ec0e045bd5f087be71587fdeb239c83 78f43c9f53c1b975e4c115281b4e14933cacf1f3 M	ic-depress-scm-git/src/org/impressivecode/depress/scm/git/GitNodeModel.java
-:100644 100644 439cab3b49b75e5f09689c7ba2eba21feaa2f008 332b97abdd5346c1da0739de2cdec99b76c957c9 M	ic-depress-scm-git/src/org/impressivecode/depress/scm/git/GitTableFactory.java
-:000000 100644 0000000000000000000000000000000000000000 dbb1f85acd56841ca41ccbf55830a6a5988b9641 A	ic-depress-scm-git/test/org/impressivecode/depress/scm/git/GitTableFactoryTest.java
 
 87697b97fd92f7d492f97d5bd3dbc12839f3e11f
 1364161079

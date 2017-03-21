@@ -93,6 +93,10 @@ public final class TableCellReader {
     public List<String> stringListOptional(final String colName) {
     	return optionalData(colName) ? Collections.<String>emptyList() : stringListCellSet(colName);
     }
+    
+    public List<Date> dateListOptional(final String colName) {
+    	return optionalData(colName) ? Collections.<Date>emptyList() : dateListCellSet(colName);
+    }
 
     public Set<String> stringSet(final String colName) {
         SetCell set = ((SetCell) row.getCell(spec.findColumnIndex(colName)));
